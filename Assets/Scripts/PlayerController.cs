@@ -19,12 +19,23 @@ public class PlayerController : MonoBehaviour
 
     void Awake()
     {
-        // We drive position directly, so any rigidbody on this object must be kinematic.
+        Debug.Log("PlayerController Awake called");
+
         if (TryGetComponent(out Rigidbody rb))
         {
             rb.isKinematic = true;
             rb.useGravity = false;
+            Debug.Log("Rigidbody set to kinematic");
         }
+        else
+        {
+            Debug.LogWarning("No Rigidbody found on Player!");
+        }
+    }
+
+    void Start()
+    {
+        Debug.Log("PlayerController Start called");
     }
 
     public void Move(InputAction.CallbackContext ctx)
@@ -53,5 +64,41 @@ public class PlayerController : MonoBehaviour
         pos.y = _y;
         pos.z = 0f;
         transform.position = pos;
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log($"COLLISION DETECTED with: {collision.gameObject.name}, Tag: {collision.gameObject.tag}");
+
+        if (collision.gameObject.CompareTag("Obstacle"))
+        {
+            Debug.Log("*** OBSTACLE HIT! GAME OVER ***");
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.GameOver();
+            }
+            else
+            {
+                Debug.LogError("GameManager.Instance is NULL!");
+            }
+        }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        Debug.Log($"TRIGGER ENTERED with: {other.gameObject.name}, Tag: {other.gameObject.tag}");
+
+        if (other.CompareTag("Obstacle"))
+        {
+            Debug.Log("*** OBSTACLE TRIGGER! GAME OVER ***");
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.GameOver();
+            }
+            else
+            {
+                Debug.LogError("GameManager.Instance is NULL!");
+            }
+        }
     }
 }
