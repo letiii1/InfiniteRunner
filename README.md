@@ -8,6 +8,7 @@ Course: CSC 443
 - B — Main Menu scene with Start/Quit buttons
 - C — Pause Menu (Esc toggles, Resume/Restart/Quit)
 - D — High Score saved between runs (PlayerPrefs)
+- F - Custom Chunks: 4 total
 - G — Difficulty Ramp (speed increases with distance)
 
 ## Controls
